@@ -1,0 +1,161 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package common.tharaka.ds.cw.communication.grpc.generated;
+
+// Enums
+enum Status {
+    SUCCESS = 0;
+    FAILURE = 1;
+}
+
+enum Role {
+    ADMIN = 0;
+    INVENTORY_CLERK = 1;
+    BUYER = 2;
+    SELLER = 3;
+}
+
+enum Type {
+    SELL = 0;
+    RENT = 1;
+    NEW_ARRIVAL = 2;
+}
+
+// Common Messages
+message StatusResponse {
+    Status status = 1;
+    string message = 2;
+}
+
+message UserRequest {
+    string userName = 1;
+}
+
+// User Messages
+message User {
+    string userName = 1;
+    string firstName = 2;
+    string lastName = 3;
+    string email = 4;
+    string address = 5;
+    Role role = 6;
+}
+
+message UserAddRequest {
+    string userName = 1;
+    string firstName = 2;
+    string lastName = 3;
+    string email = 4;
+    string address = 5;
+    Role role = 6;
+    bool isSentByPrimary = 7;
+}
+
+service UserAddService {
+    rpc addUser(UserAddRequest) returns (StatusResponse);
+}
+
+// Item Messages
+message Item {
+    string itemId = 1;
+    string itemName = 2;
+    Type type = 3;
+    double price = 4;
+    int32 availableQuantity = 5;
+    int32 reservedQuantity = 6;
+    string sellerName = 7;
+}
+
+message ItemDTO {
+    string itemId = 1;
+    string itemName = 2;
+    Type type = 3;
+    double price = 4;
+    int32 availableQuantity = 5;
+    string sellerName = 6;
+}
+
+message ItemAddRequest {
+    string itemId = 1;
+    string itemName = 2;
+    Type type = 3;
+    double price = 4;
+    int32 availableQuantity = 5;
+    string sellerName = 6;
+    bool isSentByPrimary = 7;
+}
+
+// Item Services
+service ItemAddService {
+    rpc addItem(ItemAddRequest) returns (StatusResponse);
+}
+
+message ItemUpdateRequest {
+    string itemId = 1;
+    string sellerName = 2;
+    double price = 3;
+    int32 availableQuantity = 4;
+    bool isSentByPrimary = 5;
+}
+
+service ItemUpdateService {
+    rpc updateItem(ItemUpdateRequest) returns (StatusResponse);
+}
+
+message ItemDeleteRequest {
+    string itemId = 1;
+    string sellerName = 2;
+    bool isSentByPrimary = 3;
+}
+
+service ItemDeleteService {
+    rpc deleteItem(ItemDeleteRequest) returns (StatusResponse);
+}
+
+// Item Search Services
+message ItemSellerResponse {
+    repeated Item items = 1;
+}
+
+message ItemGetAllResponse {
+    repeated ItemDTO items = 1;
+}
+
+service ItemSearchService {
+    rpc getSellerItems(UserRequest) returns (ItemSellerResponse);
+    rpc getAllItems(UserRequest) returns (ItemGetAllResponse);
+}
+
+// Reservation Services
+message Reservation {
+    string reservationId = 1;
+    string itemId = 2;
+    string itemName = 3;
+    string buyerName = 4;
+    int32 quantity = 5;
+    string reservationDate = 6;
+    double paymentAmount = 7;
+    string sellerName = 8;
+}
+
+message ReservationSearchResponse {
+    repeated Reservation reservations = 1;
+}
+
+message ReserveRequest {
+    string reservationId = 1;
+    string itemId = 2;
+    string buyerName = 4;
+    int32 quantity = 5;
+    string reservationDate = 6;
+    bool isSentByPrimary = 7;
+}
+
+service ReserveService {
+    rpc reserveItem(ReserveRequest) returns (StatusResponse);
+}
+
+service ReservationGetService {
+    rpc getReservations(UserRequest) returns (ReservationSearchResponse);
+}
+
