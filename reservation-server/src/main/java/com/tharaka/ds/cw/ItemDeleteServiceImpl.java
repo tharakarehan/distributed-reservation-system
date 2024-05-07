@@ -81,7 +81,7 @@ public class ItemDeleteServiceImpl extends ItemDeleteServiceGrpc.ItemDeleteServi
     }
 
     @Override
-    public void deleteItem(ItemDeleteRequest request, StreamObserver<StatusResponse> responseObserver) {
+    public synchronized void deleteItem(ItemDeleteRequest request, StreamObserver<StatusResponse> responseObserver) {
         if (server.isLeader()) {
             // Act as primary
             try {

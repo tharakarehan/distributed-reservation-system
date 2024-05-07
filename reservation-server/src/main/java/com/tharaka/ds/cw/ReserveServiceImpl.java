@@ -81,7 +81,7 @@ public class ReserveServiceImpl extends ReserveServiceGrpc.ReserveServiceImplBas
     }
 
     @Override
-    public void reserveItem(ReserveRequest request, StreamObserver<StatusResponse> responseObserver) {
+    public synchronized void reserveItem(ReserveRequest request, StreamObserver<StatusResponse> responseObserver) {
         if (server.isLeader()) {
             // Act as primary
             try {

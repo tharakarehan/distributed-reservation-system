@@ -81,7 +81,7 @@ public class ItemUpdateServiceImpl extends ItemUpdateServiceGrpc.ItemUpdateServi
     }
 
     @Override
-    public void updateItem(ItemUpdateRequest request, StreamObserver<StatusResponse> responseObserver) {
+    public synchronized void updateItem(ItemUpdateRequest request, StreamObserver<StatusResponse> responseObserver) {
         if (server.isLeader()) {
             // Act as primary
             try {

@@ -80,7 +80,7 @@ public class ItemAddServiceImpl extends ItemAddServiceGrpc.ItemAddServiceImplBas
     }
 
     @Override
-    public void addItem(ItemAddRequest request, StreamObserver<StatusResponse> responseObserver) {
+    public synchronized void addItem(ItemAddRequest request, StreamObserver<StatusResponse> responseObserver) {
         if (server.isLeader()) {
             // Act as primary
             try {

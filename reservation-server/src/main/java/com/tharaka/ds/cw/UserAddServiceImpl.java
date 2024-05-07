@@ -81,7 +81,7 @@ public class UserAddServiceImpl extends UserAddServiceGrpc.UserAddServiceImplBas
     }
 
     @Override
-    public void addUser(UserAddRequest request, StreamObserver<StatusResponse> responseObserver) {
+    public synchronized void addUser(UserAddRequest request, StreamObserver<StatusResponse> responseObserver) {
         if (server.isLeader()) {
             // Act as primary
             try {
